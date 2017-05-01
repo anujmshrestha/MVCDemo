@@ -32,9 +32,23 @@ namespace MVCDemo.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
+        //only shows edit data from table
         public ActionResult Edit(int id)
         {
             tblUser user = _db.tblUsers.Where(u => u.UserId == id).FirstOrDefault();
+            return View(user);
+        }
+        [HttpPost]
+        //saves the new data to table
+        public ActionResult Edit(tblUser ud)
+        {
+            tblUser user = _db.tblUsers.Where(u => u.UserId == ud.UserId).FirstOrDefault();
+            user.Username = ud.Username;
+            user.Password = ud.Password;
+            user.Usertype = ud.Usertype;
+            user.Fullname = ud.Fullname;
+            _db.SaveChanges();
+            return RedirectToAction("Index");
             return View(user);
         }
         [HttpGet]
@@ -43,18 +57,7 @@ namespace MVCDemo.Controllers
             tblUser user = _db.tblUsers.Where(u => u.UserId == id).FirstOrDefault();
             return View(user);
         }
-        [HttpPost]
-        public ActionResult Edit(tblUser ud)
-        {
-            tblUser user = _db.tblUsers.Where(u => u.UserId == ud.UserId).FirstOrDefault();
-             user.Username = ud.Username;
-            user.Password = ud.Password;
-            user.Usertype = ud.Usertype;
-            user.Fullname = ud.Fullname;
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-            return View(user);
-        }
+       
         [HttpGet]
         public ActionResult Delete(int id)
         {
